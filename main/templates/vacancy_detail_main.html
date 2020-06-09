@@ -1,0 +1,54 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block main%}
+<div class="container">
+ <div class="row padding">
+  <div class="col-md-10">
+      <div class="card">
+        <div class="card-body">
+         <div class="vachead">
+         {% if vacancies.upd_date %}
+         <p class="vacancy-creation-time"><strong>Vacancy Edited on {{vacancies.upd_date}}</strong></p>
+         {% endif %}
+         <h3>{{vacancies.vacancy_name}}</h3>
+         <h4>{{vacancies.salary}}</h4>
+         <hr>
+         </div>
+         <div class="comphead">
+         <a href="{%url 'get_company_main' %}{{vacancies.company_name}}"><h4>{{vacancies.company_name}}</h4></a>
+          <h6>{{vacancies.address}}</h6>
+         <hr>
+         </div>
+         <div class="vacmain">
+         <p>Experience: <span>{{vacancies.experience}}</span></p>
+         <p>Schedule: <span>weekdays</span></p>
+         <hr>
+         <p>{{vacancies.about}}</p>
+         <hr>
+         <p><strong>Requirements to job</strong></p>
+         {{vacancies.Requirements|linebreaks}}
+         <hr>
+         <p><strong>Duties</strong></p>
+         {{vacancies.duties|linebreaks}}
+         <hr>
+         <p><strong>Conditions</strong></p>
+         {{vacancies.work_condition}}
+         <hr>
+         <p><strong>Skills</strong></p>
+         {{vacancies.skills}}
+         <hr>
+         <p><strong>Contact details</strong></p>
+         <p>Phone: <span>{{vacancies.contacts_phone}}</span></p>
+         <p>Mail: <span>{{vacancies.contact_mail}}</span></p>
+         </div>
+         <hr>
+         <div class="date">
+         <p class="vacancy-creation-time"><strong>Vacancy published {{vacancies.publication_date}}</strong></p>
+         </div>
+     </div>
+  </div>
+ </div>
+</div>
+{% endblock %}
+{% block slider %}
+{% endblock %}

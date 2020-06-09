@@ -1,0 +1,221 @@
+{% extends 'student_home.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block main_menu %}
+<!-- Главное меню -->
+<nav class="navbar navbar-expand-md navbar-light bg-light sticky-top">
+  <div class="container-fluid">
+      <a href="#" class="navbar-brand"><img src="{% static 'images/logl.jpg' %}"></a>
+    <button class="navbar-toggler" type="button"
+     data-toggle="collapse" data-target="#navbarResponsive">
+     <span class="navbar-toggler-icon"></span>
+     </button>
+     <form class="form-inline mr-auto" method="get" action="{%url 'search_vacancy'%}">
+      <div class="md-form my-0">
+        <input class="form-control" type="text" placeholder="Search vacancy"  name = 'search_word' aria-label="Search">
+        <i class="fas fa-search text-black ml-3" aria-hidden="true"></i>
+      </div>
+    </form>
+     <div class="collapse navbar-collapse" id="navbarResponsive">
+
+    <ul class="navbar-nav ml-auto">
+    <li class="nav-item "><a href="{% url 'student_home'%}" class="nav-link">Home</a></li>
+    <li class="nav-item active"><a href="{% url 'get_resume_student'%}" class="nav-link">Resume</a></li>
+    <li class="nav-item dropdown">
+      <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Help<span class="caret"></span></a>
+      <ul class="dropdown-menu" role="menu">
+        <li><a href="{% url 'get_answers'%}" class="nav-link">FAQ</a></li>
+        <li><a href="{% url 'feedback'%}" class="nav-link">Feedback</a></li>
+      </ul>
+    </li>
+    <li class="nav-item dropdown">
+      <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"><span class="caret">{{user}}</span></a>
+      <ul class="dropdown-menu" role="menu">
+        <li><a href="#" class="nav-link">Settings</a></li>
+        <li><a href="{% url 'edit_student'%}" class="nav-link">Edit Profile</a></li>
+        <hr>
+        <li><a href="{% url 'logout'%}" class="nav-link">Logout</a></li>
+      </ul>
+    </li>
+     </ul>
+    </div>
+</nav>
+</nav>
+{% endblock %}
+{% block main %}
+{% if not PersInfor.name %}
+<a href="{% url 'resume'%}" class="nav-link">Create Resume</a>
+{% else %}
+<div class="container">
+  <div class="row padding">
+    <div class="col-md-10">
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-4 photo" style="position:left;">
+              <a href="{% url 'photo_student' %}"><img src="{%if photo.photo.url %}{{photo.photo.url}}{%else%}{% static 'default.png' %}{%endif%}" class="rounded" alt="click to update profile image" width="250" height="200"></a> 
+            </div>
+            <div class="col-md-6">
+              <h3>{{PersInfor.surname}} {{PersInfor.name}} {{PersInfor.middle_name}}</h3>
+              <p><span>{{PersInfor.gender}},</span>  <span>{{age}} year,</span>  <span>born {{PersInfor.birthday}}</span></p>
+              <p><span>{{PersInfor.city}},</span></p>
+              <a href="{% url 'pers_inform'%}">Edit</a>
+            </div>
+            <hr>
+          </div>
+          <div class="contacts">
+            <h4 style="color:grey;">Contacts</h4>
+            {% if ContInfor.mobile_phone and ContInfor.home_phone and ContInfor.skype %}
+            <p class="tel">{{ContInfor.mobile_phone}}</p>
+            <p><span>{{ContInfor.skype}}</span></p>
+            <a href="{% url 'contact_information'%}">Edit</a>
+            <hr>
+            {% else %}
+            <a href="{% url 'contact_information'%}" class="nav-link">
+            Specify your accounts</a>
+            <hr>
+            {% endif %}
+          </div>
+          <div class="work_and_professions">
+            {% if DesrdPos.desired_position%}
+            <h4 style="color:grey;">{{DesrdPos.desired_position}}</h4>
+            <p>Specialization: <span>{{DesrdPos.professional_area}}</span></p>
+            <p>Employment: <span>{{DesrdPos.employment}}</span></p>
+            <p>Work schedule: <span>{{DesrdPos.schedule}}</span></p>
+            <a href="{% url 'desired_position'%}">Edit</a>
+            <hr>
+            {% else %}
+            <a href="{% url 'desired_position'%}">Specify your position details</a>
+            <hr>
+            {% endif %}
+          </div>
+          <div class="Skills">
+            <h4 style="color:grey;">Experience</h4>
+            {% if Expr.organization%}
+            <p>Getting started date : {{Expr.getting_started_date}}</p>
+            <p>End date : {{Expr.end_date}}</p>
+            <p>Organization : {{Expr.organization}}</p>
+            <p>Region : {{Expr.region}}</p>
+            <p>Website : {{Expr.website}}</p>
+            <p>Position : {{Expr.position}}</p>
+            <p>Workplace responsibilities : {{Expr.workplace_respon}}</p>
+            <hr>
+            <h4 style="color:grey;">Key Skills</h4>
+            <p>
+              {% for skill in key_skills %}
+              <span style="border:solid grey 2px;">{{skill}}</span>
+              {% endfor %}
+            </p>
+            <a href="{% url 'experience'%}" class="nav-link">Edit</a>
+            <hr>
+            {% else %}
+            <a href="{% url 'experience'%}" class="nav-link">Position</a>
+            <hr>
+            {% endif %}
+          </div>
+          <div class="About me">
+            <h4 style="color:grey;">About me</h4>
+            {% if AbtStudent.about_student%}
+            <p>{{AbtStudent.about_student}}</p>
+            <a href="{% url 'about_student'%}">Edit</a>
+            <hr>
+            {% else %}
+            <a href="{% url 'about_student'%}" class="nav-link">Write about yourelf</a>
+            <hr>
+            {% endif %}
+          </div>
+          <div class="Education">
+            <h4 style="color:grey;">Education</h4>
+            {% if Edu.faculty%}
+            <p>Faculty: {{Edu.faculty}}</p>
+            <p>Course: {{Edu.course}}</p>
+            <p>Specality : {{Edu.specality}}</p>
+            <p>Date of ending : {{Edu.date_of_ending}}</p>
+            <a href="{% url 'education'%}">Edit</a>
+            <hr>
+            {% else %}
+            <a href="{% url 'education'%}" class="nav-link">Specify your education details</a>
+            <hr>
+            {% endif %}
+          </div>
+          <div class="Language">
+            <h4 style="color:grey;">Knowledge of languages</h4>
+            {% if LangSkls.native_language%}
+            <p>Native Language : {{LangSkls.native_language}}</p>
+            <p>Second Language : {{LangSkls.second_language}}</p>
+            <a href="{% url 'language_skills'%}">Edit</a>
+            {% else %}
+            <a href="{% url 'language_skills'%}" class="nav-link">Language that you know</a>
+            {% endif %}
+          </div>
+          <hr>
+          <a href="{% url 'resume'%}" class="btn btn-warning">Edit Resume</a>
+          <a href="{% url 'some_view' %}" class="btn btn-warning">To PDF</a>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+{% endif %}
+{% if recommended_vacancy%}
+   <div class="container-fluid padding">
+      <div class="row alert text-center">
+        <div class="col-12">
+          <h1 class="display-4">Recommended Vacancies</h1>
+          <hr>
+        </div>
+        <hr>
+      </div>
+    </div>
+    <!-- хз как -->
+   <div class="container">
+      <div class="row padding">
+    {%for vacancy in recommended_vacancy%}
+        <div class="col-md-4" style="padding-bottom: 40px"">
+          <div class="card">
+            <div class="card-body">
+              <a href="{%url 'student_home' %}{{vacancy.vac_id}}"><h4 class="card-title">{{vacancy.vacancy_name|truncatechars:26}}</h4></a>
+              <a href="{%url 'student_home' %}{{vacancy.company_name}}" class="vac_link">{{vacancy.company_name|truncatechars:26}}</a>
+              <p class="card-text">{{vacancy.salary|truncatechars:26}}</p>  
+             <hr>  
+             <p class="card-text">{{ vacancy.about|truncatechars:150}}</p>
+              <a href="{%url 'student_home' %}{{vacancy.vac_id}}" class="btn btn-warning">Подробнее</a>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+</div>
+        <a href="{% url 'recommendation_all' %}" class="text-center"><h5 class="card-text-center ">View all vacancies</h5></a>
+{% else %}
+    <div class="container-fluid padding">
+      <div class="row alert text-center">
+        <div class="col-12">
+          <h1 class="display-4">Vacancies of the day</h1>
+          <hr>
+        </div>
+        <hr>
+      </div>
+    </div>
+    <!-- хз как -->
+   <div class="container">
+      <div class="row padding">
+    {%for vacancy in vacancies%}
+        <div class="col-md-4" style="padding-bottom: 40px">
+          <div class="card">
+            <div class="card-body">
+              <a href="{%url 'student_home' %}{{vacancy.vac_id}}"><h4 class="card-title">{{vacancy.vacancy_name|truncatechars:26}}</h4></a>
+              <a href="{%url 'student_home' %}{{vacancy.company_name}}" class="vac_link">{{vacancy.company_name|truncatechars:26}}</a>
+              <p class="card-text">{{vacancy.salary|truncatechars:26}}</p>  
+             <hr>  
+             <p class="card-text">{{ vacancy.about|truncatechars:150}}</p>
+              <a href="{%url 'student_home' %}{{vacancy.vac_id}}" class="btn btn-warning">Details</a>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+</div>
+{% endif %}
+{% endblock %}
+

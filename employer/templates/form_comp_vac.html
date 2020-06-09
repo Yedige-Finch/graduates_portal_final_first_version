@@ -1,0 +1,200 @@
+{% extends 'employer_home.html' %}
+{% load static %}
+{% block main_menu %}
+
+<nav class="navbar navbar-expand-md navbar-light bg-light sticky-top">
+  <div class="container-fluid">
+      <a href="#" class="navbar-brand"><img src="{% static 'images/logl.jpg' %}"></a>
+    <button class="navbar-toggler" type="button"
+     data-toggle="collapse" data-target="#navbarResponsive">
+     <span class="navbar-toggler-icon"></span>
+     </button>
+
+     <div class="collapse navbar-collapse" id="navbarResponsive">
+
+     <ul class="navbar-nav ml-auto">
+     <li class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle {%if vacancy %}active{% endif %}" data-toggle="dropdown">Vacancies<span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="{% url 'vacancy' %}" class="nav-link active">Create vacancy</a></li>
+            <li><a href="{% url 'employer_home'%}" class="nav-link">My vacancies</a></li>
+          </ul>
+        </li>
+     
+    <li class="nav-item"><a href="{% url 'candidates'%}" class="nav-link">Candidates</a></li>
+    <li class="nav-item {%if company %}active{% endif %}"><a href="{% url 'company_get'%}" class="nav-link ">Company</a></li>
+    <li class="nav-item dropdown">
+      <a href="#" class="nav-link dropdown-toggle " data-toggle="dropdown">Help<span class="caret"></span></a>
+      <ul class="dropdown-menu" role="menu">
+        <li><a href="{% url 'get_answers'%}" class="nav-link">FAQ</a></li>
+        <li><a href="{% url 'feedback'%}" class="nav-link">Feedback</a></li>
+      </ul>
+    </li>
+    <li class="nav-item dropdown">
+      <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"><span class="caret">{{user}}</span></a>
+      <ul class="dropdown-menu" role="menu">
+        <li><a href="#" class="nav-link">Settings</a></li>
+        <li><a href="{% url 'edit_employer'%}" class="nav-link">Edit Profile</a></li>
+        <hr>
+        <li><a href="{% url 'logout'%}" class="nav-link">Logout</a></li>
+      </ul>
+    </li>
+     </ul>
+    </div>
+</nav>
+{% endblock %}
+{% block main %}
+{% load static %}
+{% load crispy_forms_tags %}
+<div class="container">
+ <div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-body">
+        {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-success" role="alert">
+              {{ message }}
+            </div>
+            {% endfor %}
+        {% endif %}
+
+        {% if saved %}
+          <div class="alert alert-success" role="alert">
+            <strong>Данные</strong> сохранены успешно!
+          </div>
+        {% endif %}
+        {%if company %}
+            <form method="POST" action="{% url 'company' %}">
+              {% csrf_token %}
+              <div class="form-group row">
+                <label for="Skills" class="col-sm-2 col-form-label">Company name</label>
+                <div class="col-sm-10">
+                  {{company.company_name}}
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="Skills" class="col-sm-2 col-form-label">Company mail</label>
+                <div class="col-sm-10">
+                  {{company.company_mail}}
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="Skills" class="col-sm-2 col-form-label">About company</label>
+                <div class="col-sm-10">
+                  {{company.about_company}}
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="Skills" class="col-sm-2 col-form-label">Address</label>
+                <div class="col-sm-10">
+                  {{company.address}}
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="Skills" class="col-sm-2 col-form-label">Contacts phone</label>
+                <div class="col-sm-10">
+                  {{company.contacts_phone}}
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="Skills" class="col-sm-2 col-form-label">Contacts site</label>
+                <div class="col-sm-10">
+                  {{company.contacts_site}}
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="Skills" class="col-sm-2 col-form-label">Industry</label>
+                <div class="col-sm-10">
+                  {{company.industry}}
+                </div>
+              </div>
+            <div class="form-group row">
+              <div class="col-sm-12">
+                <button type="submit" class="btn btn-warning btn-lg btn-block">Save</button>
+              </div>
+            </div>
+            </form>
+        {% else %}
+            <h3 class="card-title">Vacancy</h3>
+            <form method="POST" action="{% url 'vacancy' %}">
+              {% csrf_token %}
+              <div class="form-group row">
+                <label for="Skills" class="col-sm-2 col-form-label">Vacancy</label>
+                <div class="col-sm-10">
+                  {{vacancy.vacancy_name}}
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="Skills" class="col-sm-2 col-form-label">Salary</label>
+                <div class="col-sm-10">
+                  {{vacancy.salary}}
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="Skills" class="col-sm-2 col-form-label">Address</label>
+                <div class="col-sm-10">
+                  {{vacancy.address}}
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="Skills" class="col-sm-2 col-form-label">Experience</label>
+                <div class="col-sm-10">
+                  {{vacancy.experience}}
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="Skills" class="col-sm-2 col-form-label">About</label>
+                <div class="col-sm-10">
+                  {{vacancy.about}}
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="Skills" class="col-sm-2 col-form-label">Duties</label>
+                <div class="col-sm-10">
+                  {{vacancy.duties}}
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="Skills" class="col-sm-2 col-form-label">Requirements</label>
+                <div class="col-sm-10">
+                  {{vacancy.Requirements}}
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="Skills" class="col-sm-2 col-form-label">Work condition</label>
+                <div class="col-sm-10">
+                  {{vacancy.work_condition}}
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="Skills" class="col-sm-2 col-form-label">Skills</label>
+                <div class="col-sm-10">
+                  {{vacancy.skills}}
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="Skills" class="col-sm-2 col-form-label">Contacts phone</label>
+                <div class="col-sm-10">
+                  {{vacancy.contacts_phone}}
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="Skills" class="col-sm-2 col-form-label">Contact mail</label>
+                <div class="col-sm-10">
+                  {{vacancy.contact_mail}}
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-sm-12">
+                  <button type="submit" class="btn btn-warning btn-lg btn-block">Save</button>
+                </div>
+              </div>
+            </form>
+        {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

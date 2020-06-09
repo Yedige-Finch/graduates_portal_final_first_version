@@ -1,0 +1,123 @@
+{% extends 'employer_home.html' %}
+{% load static %}
+{% block main_menu %}
+<nav class="navbar navbar-expand-md navbar-light bg-light sticky-top">
+  <div class="container-fluid">
+      <a href="#" class="navbar-brand"><img src="{% static 'images/logl.jpg' %}"></a>
+    <button class="navbar-toggler" type="button"
+     data-toggle="collapse" data-target="#navbarResponsive">
+     <span class="navbar-toggler-icon"></span>
+     </button>
+
+     <div class="collapse navbar-collapse" id="navbarResponsive">
+
+     <ul class="navbar-nav ml-auto">
+     <li class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle active" data-toggle="dropdown">Vacancies<span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="{% url 'vacancy' %}" class="nav-link">Create vacancy</a></li>
+            <li><a href="{% url 'employer_home'%}" class="nav-link">My vacancies</a></li>
+          </ul>
+        </li>
+     
+    <li class="nav-item"><a href="{% url 'candidates'%}" class="nav-link">Candidates</a></li>
+    <li class="nav-item"><a href="{% url 'company_get'%}" class="nav-link">Company</a></li>
+    <li class="nav-item dropdown">
+      <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Help<span class="caret"></span></a>
+      <ul class="dropdown-menu" role="menu">
+        <li><a href="{% url 'get_answers'%}" class="nav-link">FAQ</a></li>
+        <li><a href="{% url 'feedback'%}" class="nav-link">Feedback</a></li>
+      </ul>
+    </li>
+    <li class="nav-item dropdown">
+      <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"><span class="caret">{{user}}</span></a>
+      <ul class="dropdown-menu" role="menu">
+        <li><a href="#" class="nav-link">Settings</a></li>
+        <li><a href="{% url 'edit_employer'%}" class="nav-link">Edit Profile</a></li>
+        <hr>
+        <li><a href="{% url 'logout'%}" class="nav-link">Logout</a></li>
+      </ul>
+    </li>
+     </ul>
+    </div>
+</nav>
+{% endblock %}
+{% block main%}
+<div class="container">
+ <div class="row padding">
+  <div class="col-md-10">
+      <div class="card">
+        <div class="card-body">
+         <div class="vachead">
+         {% if vacancies.upd_date %}
+         <p class="vacancy-creation-time"><strong>Vacancy Edited on {{vacancies.upd_date}}</strong></p>
+         {% endif %}
+         <h3>{{vacancies.vacancy_name}}</h3>
+         <h4>{{vacancies.salary}}</h4>
+         <hr>
+         </div>
+         <div class="comphead">
+         <a href="{%url 'company_get' %}"><h4>{{vacancies.company_name}}</h4></a>
+          <h6>{{vacancies.address}}</h6>
+         <hr>
+         </div>
+         <div class="vacmain">
+         <p>Experience: <span>{{vacancies.experience}}</span></p>
+         <p>Schedule: <span>weekdays</span></p>
+         <hr>
+         <p>{{vacancies.about}}</p>
+         <hr>
+         <p><strong>Requirements to job</strong></p>
+         {{vacancies.Requirements|linebreaks}}
+         <hr>
+         <p><strong>Duties</strong></p>
+         {{vacancies.duties|linebreaks}}
+         <hr>
+         <p><strong>Conditions</strong></p>
+         {{vacancies.work_condition}}
+         <hr>
+         <p><strong>Skills</strong></p>
+         {{vacancies.skills}}
+         <hr>
+         <p><strong>Contact details</strong></p>
+         <p>Phone: <span>{{vacancies.contacts_phone}}</span></p>
+         <p>Mail: <span>{{vacancies.contact_mail}}</span></p>
+         </div>
+         <hr>
+         <div class="date">
+         <p class="vacancy-creation-time"><strong>Vacancy published {{vacancies.publication_date}}</strong></p>
+         <br><br>
+         <a href="{% url 'vacancy' %}{{vacancies.vac_id}}" class="btn btn-warning">Edit</a>
+         <a href="{%url 'vacancy_get' %}remove_vacancy/{{vacancies.vac_id}}" class="btn btn-danger">Delete</a>
+         </div>
+     </div>
+  </div>
+ </div>
+</div>
+<br>
+
+{% if responds %}
+<h6>Responses to vacancy: </h6>
+{% for respond in responds %}
+ <div class="row padding">
+    <div class="col-md-10">
+        <div class="card">
+            <div class="card-body">
+                <div class="vachead">
+                <h6>{{respond.student.user.first_name}} {{respond.student.user.last_name}}</h6>
+                 <p>Responded to vacancy: <strong>{{respond.send_date}}</strong></p>
+                 <a href="{%url 'resume_employer'%}{{respond.student.user}}/{{respond.resp_id}}">{{respond.student.user.desiredposition.desired_position}}</a>
+                 <p>Covering letter:</p>
+                 <p><strong>{{respond.message}}</strong></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+{% endfor %}
+{% endif %}
+</div>
+{% endblock %}
+{% block slider %}
+{% endblock %}

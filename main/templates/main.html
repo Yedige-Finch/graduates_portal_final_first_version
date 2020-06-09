@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html>
+<head>
+	{% load static %}
+  <title>Diploma</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+<!-- <link rel="stylesheet"   href="{% static 'mainStyle.css' %}"  type="text/css" media="all" /> -->
+<style type="text/css">
+#btn-toolbar form {
+  padding: 0;
+  top: -1px;
+  float: left;
+  white-space: nowrap;
+  margin-left: 5px;
+}
+@imoprt url('https://fonts.googleapis.com/css?family=Poppins:400,500,700');
+
+body, html {
+  width: 100%;
+  height: 100%;
+  fon-family: 'Poppins', san-serif;
+  color: #222;
+}
+
+.navbar-brand img {width: 150px}
+
+.navbar-nav li {
+  padding-right: 20px;
+}
+
+.nav-link {font-size: 1.1em !important}
+
+.carousel-inner {
+  height: 500px;
+}
+
+.carousel-inner img {
+  transform: translateY(-25%);
+  width: 100%;
+  height: 100%;
+}
+
+.carousel-caption {
+  position: absolute;
+  top: 45%;
+  transform: translateY(-35%);
+  text-shadow: 1px 1px 10px #000;
+}
+
+.social a {
+  font-size: 4em;
+  padding: 20px;
+}
+
+.fa-facebook {color:#3b5998}
+.fa-vk {color:#3b5998}
+.fa-instagram {color:#517fa4}
+.fa-youtube {color:#bb0000}
+.fa-google-plus-g {color:#dd4b39}
+
+.fa-facebook:hover, .fa-vk:hover,
+.fa-instagram:hover, .fa-youtube:hover,
+.fa-google-plus-g:hover {
+  color: #ccc;
+}
+
+footer {
+  background-color: #3f3f3f;
+  padding-top: 50px;
+  border-top: 4px solid silver;
+  color: white;
+ 
+}
+
+bottom:0;
+  position: relative;
+</style>
+</head>
+<body>
+{% block main_menu %}
+
+<!-- Главное меню -->
+<nav class="navbar navbar-expand-md navbar-light bg-light sticky-top">
+	<div class="container-fluid">
+	    <a href="#" class="navbar-brand"><img src="{% static 'images/logl.jpg' %}"></a>
+		<button class="navbar-toggler" type="button"
+		 data-toggle="collapse" data-target="#navbarResponsive">
+		 <span class="navbar-toggler-icon"></span>
+		 </button>
+     <form class="form-inline mr-auto" method="get" action="{%url 'search_vacancy'%}">
+      <div class="md-form my-0">
+        <input class="form-control" type="text" placeholder="Search"  name = 'search_word' aria-label="Search">
+        <i class="fas fa-search text-black ml-3" aria-hidden="true"></i>
+      </div>
+    </form>
+		 <div class="collapse navbar-collapse" id="navbarResponsive">
+
+	  <ul class="navbar-nav ml-auto">
+	    <li class="nav-item active"><a href="{% url 'feedback'%}" class="nav-link">Help</a></li>
+		<li class="nav-item"><a href="{%url 'login' %}" class="nav-link">Login</a></li>
+		<li class="nav-item"><a href="{%url 'registration_student' %}" class="nav-link">Resume</a></li>
+     </ul>
+    </div>
+</nav>
+{% endblock %}
+{% block slider %}
+<!-- Слайдер -->
+<div class="carousel slide" data-ride="carousel" id="slides">
+  <ul class="carousel-indicators">
+    <li data-target="#slides" data-slide-to="0" class="active"></li>
+    <li data-target="#slides" data-slide-to="1"></li>
+    <li data-target="#slides" data-slide-to="2"></li>
+  </ul>
+ <div class="carousel-inner">
+   <div class="carousel-item active">
+     <img src="{% static 'images/slide0.jpg' %}">
+     <div class="carousel-caption">
+       <h1 class="display-2">IT_Find_Job</h1>
+
+       <a href="{% url 'login'%}"><button type="button" class="btn btn-outline-light btn-lg">Login</button></a>
+      <a href="{% url 'registration_student'%}"><button type="button" class="btn btn-warning btn-lg">Create resume</button></a>
+    </div>
+  </div>
+  <div class="carousel-item">
+    <img src="{% static 'images/slide1.jpeg' %}">
+  </div>
+  <div class="carousel-item">
+    <img src="{% static 'images/slide2.jpg' %}">
+  </div>
+</div>
+</div>
+{% endblock %}
+<br><br><br>
+<!--Блоки примеров -->
+{% block main %}
+<div class="container-fluid padding">
+  <div class="row alert text-center">
+    <div class="col-12">
+      <h1 class="display-4">Vacancy of the day</h1>
+      <hr>
+    </div>
+    <hr>
+  </div>
+</div>
+<!-- хз как -->
+   <div class="container">
+      <div class="row padding">
+    {%for vacancy in vacancies%}
+        <div class="col-md-4" style="padding-bottom: 35px">
+          <div class="card">
+            <div class="card-body">
+              <a href="{%url 'get_vacancy_main' %}{{vacancy.vac_id}}"><h4 class="card-title">{{vacancy.vacancy_name|truncatechars:26}}</h4></a>
+              <a href="{%url 'get_company_main' %}{{vacancy.company_name}}" class="vac_link">{{vacancy.company_name|truncatechars:26}}</a>
+              <p class="card-text">{{vacancy.salary|truncatechars:26}}</p>  
+             <hr>  
+             <p class="card-text">{{vacancy.about|truncatechars:150}}</p>
+              <a href="{%url 'get_vacancy_main' %}{{vacancy.vac_id}}" class="btn btn-warning">Details</a>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+</div>
+<br>
+<div class="container-fluid">
+    <div class="row alert text-center">
+      <div class="col-12">
+        <h1 class="display-7 font-italic">Companies of the day</h1>
+        <hr>
+      </div>
+      <hr>
+    </div>
+  </div>
+  <!-- хз как -->
+
+
+  <div class="container">
+    <div class="row padding">
+      <div class="col-md">
+        <div class="card">
+          <div class="row card-body">
+            <div class="col-md">
+            {% for company in companies %}
+            <a href="{%url 'get_company_main' %}{{company.company_name}}"><h4 class="card-title text-secondary">{{company.company_name}}<span class="badge badge-info float-right">{{ company.total}}</span></h4></a>
+            {% endfor %}
+            </div>
+            <span class="border-right"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br>
+<div class="container">
+  <div class="card">
+    <br><h3 class="font-italic text-center">Articles and News</h3><hr>
+    <div class="row card-body">
+      {% for article in articles %}
+      <div class="col-md">
+        <div class="row">
+          <div class="col-md">
+            <img src="{{article.photo.url}}" alt="Chicago" width="150" height="100">
+          </div>
+          <div class="col-md"><a href="{%url 'new' %}{{article.article_id}}"><h6 align="center" class="card-text-primary font-italic">{{article.Article|truncatechars:100}}</h6></a>
+          </div>
+        </div>
+      </div>
+      <span class="border-right"></span>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+<br>
+{% endblock %}
+{% block footer %}
+<hr>
+<footer class="page-footer font-small mdb-color pt-4">
+  <div class="container text-center text-md-left">
+    <div class="row text-center text-md-left mt-3 pb-3">
+      <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mt-3">
+        <h6 class="text-uppercase mb-4 font-weight-bold">International IT University</h6>
+        <p class="font-italic">Program your future for success</p>
+      </div>
+      <hr class="w-100 clearfix d-md-none">
+      <hr class="w-100 clearfix d-md-none">
+      <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mt-3">
+        <h6 class="text-uppercase mb-4 font-weight-bold">Useful links</h6>
+        <p>
+          {%if user.is_authenticated %}
+          <a href="{%if user.is_student%}{% url 'edit_student' %} {% else %} {% url 'edit_employer' %} {%endif%}">Your Account</a>
+          {%endif%}
+        </p>
+        <p>
+          <a href="{% url 'software_requirements' %}">Software requirements</a>
+        </p>
+        <p>
+          <a href="{% url 'feedback'%}">Help</a>
+        </p>
+      </div>
+      <hr class="w-100 clearfix d-md-none">
+      <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mt-3">
+        <h6 class="text-uppercase mb-4 font-weight-bold">Contact</h6>
+        <p><i class="fas fa-home mr-3"></i> Almaty, Manas street 34/1, KZ</p>
+        <p><i class="fas fa-envelope mr-3"></i> info@iitu.kz</p>
+        <p><i class="fas fa-phone mr-3"></i> + 7(771) 701 44 66</p>
+      </div>
+    </div>
+    <hr>
+    <div class="row d-flex align-items-center">
+      <div class="col-md-7 col-lg-8">
+        <p class="text-center text-md-left">© 2020 Copyright:
+          <a href="https://iitu.kz/">
+            <strong> www.iitu.kz</strong>
+          </a>
+        </p>
+      </div>
+      <div class="col-md-5 col-lg-4 ml-lg-0">
+        <div class="text-center text-md-right">
+          <ul class="list-unstyled list-inline">
+            <li class="list-inline-item">
+              <a class="btn-floating btn-sm rgba-white-slight mx-1">
+                <i class="fab fa-facebook-f"></i>
+              </a>
+            </li>
+            <li class="list-inline-item">
+              <a class="btn-floating btn-sm rgba-white-slight mx-1">
+                <i class="fab fa-twitter"></i>
+              </a>
+            </li>
+            <li class="list-inline-item">
+              <a class="btn-floating btn-sm rgba-white-slight mx-1">
+                <i class="fab fa-google-plus-g"></i>
+              </a>
+            </li>
+            <li class="list-inline-item">
+              <a class="btn-floating btn-sm rgba-white-slight mx-1">
+                <i class="fab fa-linkedin-in"></i>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+{% endblock %}
+</body>
+{% block javascript %}{% endblock %}
+</html>

@@ -1,0 +1,111 @@
+{% extends 'employer_home.html' %}
+{% load static %}
+{% block main_menu %}
+<nav class="navbar navbar-expand-md navbar-light bg-light sticky-top">
+  <div class="container-fluid">
+      <a href="#" class="navbar-brand"><img src="{% static 'images/logl.jpg' %}"></a>
+    <button class="navbar-toggler" type="button"
+     data-toggle="collapse" data-target="#navbarResponsive">
+     <span class="navbar-toggler-icon"></span>
+     </button>
+
+     <div class="collapse navbar-collapse" id="navbarResponsive">
+
+     <ul class="navbar-nav ml-auto">
+     <li class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle " data-toggle="dropdown">Vacancies<span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="{% url 'vacancy' %}" class="nav-link">Create vacancy</a></li>
+            <li><a href="{% url 'employer_home'%}" class="nav-link">My vacancies</a></li>
+          </ul>
+        </li>
+     
+    <li class="nav-item"><a href="{% url 'candidates'%}" class="nav-link">Candidates</a></li>
+    <li class="nav-item active"><a href="{% url 'company_get'%}" class="nav-link">Company</a></li>
+    <li class="nav-item dropdown">
+      <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Help<span class="caret"></span></a>
+      <ul class="dropdown-menu" role="menu">
+        <li><a href="{% url 'get_answers'%}" class="nav-link">FAQ</a></li>
+        <li><a href="{% url 'feedback'%}" class="nav-link">Feedback</a></li>
+      </ul>
+    </li>
+    <li class="nav-item dropdown">
+      <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"><span class="caret">{{user}}</span></a>
+      <ul class="dropdown-menu" role="menu">
+        <li><a href="#" class="nav-link">Settings</a></li>
+        <li><a href="{% url 'edit_employer'%}" class="nav-link">Edit Profile</a></li>
+        <hr>
+        <li><a href="{% url 'logout'%}" class="nav-link">Logout</a></li>
+      </ul>
+    </li>
+     </ul>
+    </div>
+</nav>
+{% endblock %}
+{% block main %}
+
+<div class="container">
+ <div class="row padding">
+  <div class="col-md-10">
+      <div class="card">
+        <div class="card-body">
+         <div class="res_head">
+<!--          <div class="photo" style="position:left;">
+         <p>Company div</p>
+         </div> -->
+         <h3 style="color:grey;">{{company.company_name}}</h3>
+         <p>{{company.about_company}}</p>
+         <hr>
+         </div>
+         <div class="contacts">
+         <h4 style="color:grey;">Contacts and address</h4>
+         <p>Phone: <span>{{company.contacts_phone}}</span></p>
+         <p>Mail: <span>{{company.company_mail}}</span></p>
+         <p class="tel">Site: <span>{{company.contacts_site}}</span></p>
+         <p>Adress: <span>{{company.address}}</span></p>
+         <hr>
+         <h4 style="color:grey;">Industry</h4>
+         <p>{{company.industry}}</p>
+         </div>     
+         <hr>
+         <div class="date">
+         <a href="{% url 'company'%}" class="btn btn-warning">Edit</a>
+         </div>
+     </div>
+  </div>
+ </div>
+ </div>
+ </div>
+ {%if vacancies%}
+ <div class="container-fluid padding">
+  <div class="row alert text-center">
+    <div class="col-12">
+      <h1 class="display-7">Company vacancies</h1>
+      <hr>
+    </div>
+    <hr>
+  </div>
+</div>
+<!-- хз как -->
+
+
+<div class="container">
+  <div class="row padding">
+    {%for vacancy in vacancies%}
+    <div class="col-md-4" style="padding-bottom: 35px">
+      <div class="card">
+        <div class="card-body">
+          <a href="{%url 'vacancy_get' %}{{vacancy.vac_id}}"><h4 class="card-title">{{vacancy.vacancy_name}}</h4></a>
+          <a href="{%url 'company_get' %}" class="vac_link">{{vacancy.company_name}}</a>
+          <p class="card-text">{{vacancy.salary}}</p>  
+         <hr>
+         <p class="card-text">{{vacancy.about|truncatechars:200}}</p>
+         <a href="{%url 'vacancy_get' %}{{vacancy.vac_id}}" class="btn btn-warning">Details</a>
+       </div>
+     </div>
+   </div>
+   {%endfor%}
+ </div>
+</div>
+ {% endif %}
+{% endblock %}

@@ -1,0 +1,56 @@
+{% extends 'student_home.html' %}
+{% load static %}
+{% block main%}
+{% for search_result in search_results %}
+<div class="container">
+ <div class="row padding">
+  <div class="col-md-10">
+      <div class="card">
+        <div class="card-body">
+         <div class="vachead">
+         {% if search_result.upd_date %}
+         <p class="vacancy-creation-time"><strong>Vacancy Edited on {{search_result.upd_date}}</strong></p>
+         {% endif %}
+         <a href="{%url 'student_home' %}{{search_result.vac_id}}"><h4 class="card-title">{{search_result.vacancy_name|truncatechars:26}}</h4></a>
+         </div>
+         <div class="comphead">
+         <a href="{%url 'student_home' %}{{search_result.company_name}}"><h4>{{search_result.company_name}}</h4></a>
+          <h6>{{search_result.address}}</h6>
+         <hr>
+         </div>
+         <div class="vacmain">
+         <p>{{search_result.about}}</p>
+         <hr>         
+       </div>
+         <div class="date">
+         <p class="vacancy-creation-time"><strong>Vacancy published {{search_result.publication_date}}</strong></p>
+         </div>
+     </div>
+  </div>
+ </div>
+</div>
+</div>
+<br><br>
+{% endfor%}
+{% if search_results.has_other_pages %}
+<div class="container">
+  <div class="row padding">
+    <div class="col-md-10">
+      <nav aria-label="Page navigation example">
+        <ul class="pagination">
+        {% for num in search_results.paginator.page_range %}
+        {% if search_results.number == num %}
+        <li class="page-item"><a class="page-link" href="#">{{ num }}</a></li>
+        {% else %}
+        <li class="waves-effect"><a class="page-link" href="?page={{ num }}{% if request.GET.search_word %}&search_word={{ request.GET.search_word }}{% endif %}">{{ num }}</a></li>
+        {% endif %}
+        {% endfor %}
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>
+{% endif %}
+{% endblock %}
+{% block slider %}
+{% endblock %}

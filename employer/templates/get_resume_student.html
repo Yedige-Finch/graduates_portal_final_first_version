@@ -1,0 +1,217 @@
+{% extends 'employer_home.html' %}
+{% load static %}
+
+{% block main_menu %}
+
+<nav class="navbar navbar-expand-md navbar-light bg-light sticky-top">
+  <div class="container-fluid">
+    <a href="#" class="navbar-brand"><img src="{% static 'images/logl.jpg' %}"></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle active" data-toggle="dropdown">Vacancies<span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="{% url 'vacancy' %}" class="nav-link">Create vacancy</a></li>
+            <li><a href="{% url 'employer_home'%}" class="nav-link">My vacancies</a></li>
+          </ul>
+        </li>
+        <li class="nav-item"><a href="{% url 'candidates'%}" class="nav-link">Candidates</a></li>
+        <li class="nav-item"><a href="{% url 'company_get'%}" class="nav-link">Company</a></li>
+        <li class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Help<span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="{% url 'get_answers'%}" class="nav-link">FAQ</a></li>
+            <li><a href="{% url 'feedback'%}" class="nav-link">Feedback</a></li>
+          </ul>
+        </li>
+        <li class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"><span class="caret">{{user}}</span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="#" class="nav-link">Settings</a></li>
+            <li><a href="{% url 'edit_employer'%}" class="nav-link">Edit Profile</a></li>
+            <hr>
+            <li><a href="{% url 'logout'%}" class="nav-link">Logout</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </nav>
+{% endblock %}
+{% block main %}
+<div class="container">
+ <div class="row padding">
+  <div class="col-md-10">
+    <div class="card">
+      <div class="card-body">
+        <div class="res_head">
+          <div class="photo" style="position:left;">
+            <p>Photo</p>
+          </div>
+          <hr>
+          <h3>{{PersInfor.surname}} {{PersInfor.name}} {{PersInfor.middle_name}}</h3>
+          <p><span>{{PersInfor.gender}},</span>  <span>{{age}} year,</span>  <span>born {{PersInfor.birthday}}</span></p>
+          <p><span>{{PersInfor.city}},</span></p>
+        <hr>
+        </div>
+        {% if ContInfor.mobile_phone and ContInfor.home_phone and ContInfor.skype %}
+        <div class="contacts">
+          <h4 style="color:grey;">Contacts</h4>
+          <p class="tel">{{ContInfor.mobile_phone}}</p>
+          <p><span>{{ContInfor.skype}}</span></p>
+        <hr>
+        </div>
+        {% endif %}
+        
+        {% if DesrdPos.desired_position%}
+        <div class="work_and_professions">
+          <h4 style="color:grey;">{{DesrdPos.desired_position}}</h4>
+          <p>Specialization: <span>{{DesrdPos.professional_area}}</span></p>
+          <p>Employment: <span>{{DesrdPos.employment}}</span></p>
+          <p>Work schedule: <span>{{DesrdPos.schedule}}</span></p>
+        <hr>
+        </div>
+        {% endif %}
+        
+        {% if Expr.organization%}
+        <div class="Skills">
+          <h4 style="color:grey;">Experience</h4>
+          <p>Getting started date : {{Expr.getting_started_date}}</p>
+          <p>End date : {{Expr.end_date}}</p>
+          <p>Organization : {{Expr.organization}}</p>
+          <p>Region : {{Expr.region}}</p>
+          <p>Website : {{Expr.website}}</p>
+          <p>Position : {{Expr.position}}</p>
+          <p>Workplace responsibilities : {{Expr.workplace_respon}}</p>
+          <hr>
+          <h4 style="color:grey;">Key Skills</h4>
+          <p>
+            {% for skill in key_skills %}
+            <span style="border:solid grey 2px;">{{skill}}</span>
+            {% endfor %}
+          </p>          
+          <hr>
+        </div>
+        {% endif %}
+        
+        {% if AbtStudent.about_student%}
+        <div class="About me">
+          <h4 style="color:grey;">About me</h4>
+          <p>{{AbtStudent.about_student}}</p>
+        <hr>
+        </div>
+        {% endif %}
+        
+        {% if Edu.faculty%}
+        <div class="Education">
+          <h4 style="color:grey;">Education</h4>
+          <p>Faculty: {{Edu.faculty}}</p>
+          <p>Course: {{Edu.course}}</p>
+          <p>Specality : {{Edu.specality}}</p>
+          <p>Date of ending : {{Edu.date_of_ending}}</p>
+        <hr>
+        </div>
+        {% endif %}
+
+        {% if LangSkls.native_language%}
+        <div class="Language">
+          <h4 style="color:grey;">Knowledge of languages</h4>
+          <p>Native Language : {{LangSkls.native_language}}</p>
+          <p>Second Language : {{LangSkls.second_language}}</p>
+        </div>
+        {% endif %}
+
+        <a href="#" class="btn btn-warning">To PDF</a>
+      </div>
+    </div>
+      <br>
+    {% if responds %}
+    <div class="card  bg-default mb-3">
+      <div class="card-header">Covering letter</div>
+      <div class="card-body">
+        <h5 class="card-title">{{responds.message}} </h5>
+        <p class="card-text"><strong>Letter written {{responds.respond_send_date}}</strong></p>
+      </div>
+      {% if responds.respond_status_student == 'Invititation' %}
+      <a href="#" class="btn btn-secondary">Invited for an interview</a>
+      {% elif responds.respond_status_student == 'Renouncement' %}
+      <a href="#" class="btn btn-secondary">Candidate rejected</a>
+      {% else %}
+      <a href="#exampleModalCenter" data-toggle="modal" data-target="#" class="btn btn-success">Invite for an interview</a>
+      <a href="#reject" data-toggle="modal" data-target="#" class="btn btn-danger">Reject candidate</a>
+      {% endif %}
+    </div>
+    {% endif %}
+
+    {% if responds.respond_status_student == 'Invititation' %}
+    <div class="card text-white bg-success mb-3">
+      <div class="card-header">Your answer</div>
+      <div class="card-body">
+        <h5 class="card-title">>{{responds.employer_message}}</h5>
+        <p class="card-text"><strong>Letter written {{responds.respond_send_date}}</strong></p>
+      </div>
+    </div>
+    {% endif %}
+
+    {% if responds.respond_status_student == 'Renouncement' %}
+    <div class="card text-white bg-danger mb-3">
+      <div class="card-header">Your answer</div>
+      <div class="card-body">
+        <h5 class="card-title">>{{responds.employer_message}}</h5>
+        <p class="card-text"><strong>Letter written {{responds.respond_send_date}}</strong></p>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+</div>
+</div>
+<br>
+<br>
+
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5>Answer to {{PersInfor.surname}} {{PersInfor.name}} {{PersInfor.middle_name}}</h5>
+      </div>
+      <div class="modal-body">
+        <form  method="POST" action = "{% url 'invite_student' %}">
+          {% csrf_token %}
+          <input type="hidden" name="resp_id" value="{{responds.resp_id}}">
+          <div class="form-group">
+            <textarea class="form-control" name="employer_message" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">Respond</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="reject" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5>Answer to {{PersInfor.surname}} {{PersInfor.name}} {{PersInfor.middle_name}}</h5>
+      </div>
+      <div class="modal-body">
+        <form  method="POST" action = "{% url 'reject_student' %}">
+          {% csrf_token %}
+          <input type="hidden" name="resp_id" value="{{responds.resp_id}}">
+          <div class="form-group">
+            <textarea class="form-control" name="employer_message" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">Respond</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}

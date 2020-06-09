@@ -1,0 +1,63 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block main_menu %}
+<nav class="navbar navbar-expand-md navbar-light bg-light sticky-top">
+  <div class="container-fluid">
+    <a href="#" class="navbar-brand"><img src="{% static 'images/logl.jpg' %}"></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle active" data-toggle="dropdown">Vacancies<span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="{% url 'vacancy' %}" class="nav-link">Create vacancy</a></li>
+            <li><a href="{% url 'employer_home'%}" class="nav-link active">My vacancies</a></li>
+          </ul>
+        </li>
+        <li class="nav-item"><a href="{% url 'candidates'%}" class="nav-link">Candidates</a></li>
+        <li class="nav-item"><a href="{% url 'company_get'%}" class="nav-link">Company</a></li>
+        <li class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Help<span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="{% url 'get_answers'%}" class="nav-link">FAQ</a></li>
+            <li><a href="{% url 'feedback'%}" class="nav-link">Feedback</a></li>
+          </ul>
+        </li>
+        <li class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"><span class="caret">{{user}}</span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="#" class="nav-link">Settings</a></li>
+            <li><a href="{% url 'edit_employer'%}" class="nav-link">Edit Profile</a></li>
+            <hr>
+            <li><a href="{% url 'logout'%}" class="nav-link">Logout</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </nav>
+{% endblock %}
+{% block main%}
+{% if vacancies is None %}
+<div class="container">
+  <h2 align="center" style="color:grey;">You don't have any vacancy. Click <a href="{% url 'vacancy' %}">Create</a> to create vacancy</h2>
+</div>
+{%else%}
+<div class="container">
+  <h2 align="center" style="color:grey;">My vacancies</h2><hr>
+  {%for vacancy in vacancies%}
+  <div class="card">
+    <div class="card-body">
+      <h4 class="card-title"><a href="{%url 'vacancy_get' %}{{vacancy.vac_id}}" class="card-title">{{vacancy.vacancy_name}}<span style="float:right;">{{vacancy.salary}}<span></a></h4><hr>
+        <a href="{%url 'company_get' %}" class="card-text"><p>{{vacancy.company_name}}</p></a>
+        <a href="{%url 'vacancy_get' %}{{vacancy.vac_id}}" class="card-link btn btn-warning">Details Vacancy</a>
+        <a href="{%url 'vacancy_get' %}remove_vacancy/{{vacancy.vac_id}}" class="card-link btn btn-danger">Delete Vacancy</a>
+      </div>
+    </div><br>
+    {% endfor %}
+  </div><br>
+{% endif  %}
+{% endblock %}
+{% block slider %}
+{% endblock %}

@@ -1,0 +1,119 @@
+{% extends 'student_home.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block main %}
+<div class="container">
+  <div class="card">
+    <div class="row card-body">
+      <div class="col-md-12">
+        <h3 class="font-italic text-center">My events</h3><hr>
+        <div class="row">
+        <div class="col-md">
+          <a href="{% url 'responses_and_invitations'%}"><h5 class="card-text">Feedbacks<h5></a>
+        </div>
+        <span class="border-right"></span>
+        <div class="col-md">
+          <a href="{% url 'favorite_vacancies'%}"><h5 class="card-text">Favorite vacancies</h5></a>
+        </div>
+        <span class="border-right"></span>
+        <div class="col-md">
+        <a href="{% url 'undesirable_vacancies'%}"><h5 class="card-text">Undesirable vacancies</h5></a>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<br>
+<div class="container">
+  {% if responds %}
+  <h2>Responses and Invitations</h2><hr>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Status</th>
+        <th>Vacancy</th>
+        <th>Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for respond in responds%}
+      <tr class="{%if respond.respond_status_student == 'Invititation' %} table-success {% elif respond.respond_status_student == 'Resume viewed' %}table-warning{% elif respond.respond_status_student == 'Renouncement' %} table-danger {%else %} table-default  {% endif %}">
+        <td>{{respond.respond_status_student}}</td>
+        <td><h6><a href="{%url 'student_home' %}{{respond.vac_id.vac_id}}">{{respond.vac_id.vacancy_name}}</a></h6><a href="{%url 'student_home' %}{{respond.vac_id.company_name}}">{{respond.vac_id.company_name}}</a></td>
+        <td>{{respond.respond_send_date}}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+    <div class="container-fluid padding">
+    <div class="row alert text-center">
+      <div class="col-12">
+        <h1 class="display-7">Reccomended vacancies</h1>
+        <hr>
+      </div>
+      <hr>
+    </div>
+  </div>
+  <!-- хз как -->
+
+
+  <div class="container">
+    <div class="row padding">
+      {% for vacancy in recommended_vacancy%}
+        <div class="col-md-4">
+          <div class="card">
+            <div class="card-body">
+              <a href="{%url 'student_home' %}{{vacancy.vac_id}}"><h4 class="card-title">{{vacancy.vacancy_name|truncatechars:26}}</h4></a>
+              <a href="{%url 'student_home' %}{{vacancy.company_name}}" class="vac_link">{{vacancy.company_name|truncatechars:26}}</a>
+              <p class="card-text">{{vacancy.salary|truncatechars:26}}</p>  
+             <hr>  
+             <p class="card-text">{{vacancy.about|truncatechars:150}}</p>
+              <a href="{%url 'get_vacancy_main' %}{{vacancy.vac_id}}" class="btn btn-warning">Details</a>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+{% else %}
+<h2>Unfourtanetly you don't have any responds.Watch the following intersting vacancies</h2><hr>
+{% for vacancy in vacancies %}
+<div class="container">
+ <div class="row padding">
+  <div class="col-md-10">
+      <div class="card">
+        <div class="card-body">
+         <div class="vachead">
+         {% if vacancy.upd_date %}
+         <p class="vacancy-creation-time"><strong>Vacancy Edited on {{vacancy.upd_date}}</strong></p>
+         {% endif %}
+         <a href="{%url 'student_home' %}{{vacancy.vac_id}}"><h4 class="card-title">{{vacancy.vacancy_name|truncatechars:26}}</h4></a>
+         </div>
+         <div class="comphead">
+         <a href="{%url 'student_home' %}{{vacancy.company_name}}"><h4>{{vacancy.company_name}}</h4></a>
+          <h6>{{vacancy.address}}</h6>
+         <hr>
+         </div>
+         <div class="vacmain">
+         <p>{{vacancy.about}}</p>
+         <hr>         
+       </div>
+         <div class="date">
+         <p class="vacancy-creation-time"><strong>Vacancy published {{vacancy.publication_date}}</strong></p>
+         </div>
+     </div>
+  </div>
+ </div>
+</div>
+</div>
+<br><br>
+{% endfor%}
+{%endif%}
+</div>
+{% endblock %}
+
+
+

@@ -1,0 +1,138 @@
+{% extends 'employer_home.html' %}
+{% load static %}
+{% block main_menu %}
+<nav class="navbar navbar-expand-md navbar-light bg-light sticky-top">
+  <div class="container-fluid">
+      <a href="#" class="navbar-brand"><img src="{% static 'images/logl.jpg' %}"></a>
+    <button class="navbar-toggler" type="button"
+     data-toggle="collapse" data-target="#navbarResponsive">
+     <span class="navbar-toggler-icon"></span>
+     </button>
+
+     <div class="collapse navbar-collapse" id="navbarResponsive">
+
+     <ul class="navbar-nav ml-auto">
+     <li class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle " data-toggle="dropdown">Vacancies<span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="{% url 'vacancy' %}" class="nav-link">Create vacancy</a></li>
+            <li><a href="{% url 'employer_home'%}" class="nav-link">My vacancies</a></li>
+          </ul>
+        </li>
+     
+    <li class="nav-item"><a href="{% url 'candidates'%}" class="nav-link">Candidates</a></li>
+    <li class="nav-item"><a href="{% url 'company_get'%}" class="nav-link">Company</a></li>
+    <li class="nav-item dropdown">
+      <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Help<span class="caret"></span></a>
+      <ul class="dropdown-menu" role="menu">
+        <li><a href="{% url 'get_answers'%}" class="nav-link">FAQ</a></li>
+        <li><a href="{% url 'feedback'%}" class="nav-link">Feedback</a></li>
+      </ul>
+    </li>
+    <li class="nav-item dropdown">
+      <a href="#" class="nav-link dropdown-toggle active" data-toggle="dropdown"><span class="caret">{{user}}</span></a>
+      <ul class="dropdown-menu" role="menu">
+        <li><a href="#" class="nav-link">Settings</a></li>
+        <li><a href="{% url 'edit_employer'%}" class="nav-link active">Edit Profile</a></li>
+        <hr>
+        <li><a href="{% url 'logout'%}" class="nav-link">Logout</a></li>
+      </ul>
+    </li>
+     </ul>
+    </div>
+</nav>
+{% endblock %}
+
+{% block main%}
+{% load crispy_forms_tags %}
+{% if saved %}
+  <div class="alert alert-success" role="alert">
+    <strong>Данные</strong> сохранены успешно!
+  </div>
+{% endif %}
+<div class="container">
+ <div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-body">
+        <h2>Edit profile</h2>
+        {% if profile %}
+        <form method="POST" action="{% url 'edit_employer_profile' %}" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="form-group row">
+            <label for="Skills" class="col-sm-2 col-form-label">Organiztion name</label>
+            <div class="col-sm-10">
+              {{profile.org_name}}
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="Skills" class="col-sm-2 col-form-label">Your position</label>
+            <div class="col-sm-10">
+              {{profile.position}}
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="Skills" class="col-sm-2 col-form-label">Phone</label>
+            <div class="col-sm-10">
+              {{profile.phone}}
+            </div>
+          </div>
+          <br>
+          <div class="col-sm-12">
+            <button type="submit" class="btn btn-warning btn-lg btn-block">Save</button>
+          </div>
+        </form>
+
+        {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<br>
+<br>
+<div class="container">
+ <div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-body">
+        <form method="POST" action="{% url 'edit_employer_user' %}">
+          {% csrf_token %}
+          <h2>Edit user specifications</h2>
+          <br>
+          <div class="form-group row">
+            <label for="date-input" class="col-sm-2 col-form-label">Name</label>
+            <div class="col-sm-10">
+              {{form.first_name}}
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="date-input" class="col-sm-2 col-form-label">Last name</label>
+            <div class="col-sm-10">
+              {{form.last_name}}
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="date-input" class="col-sm-2 col-form-label">Old password</label>
+            <div class="col-sm-10">
+              {{form.old_password}}
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="date-input" class="col-sm-2 col-form-label">New password</label>
+            <div class="col-sm-10">
+              {{form.password}}
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-sm-12">
+            <button type="submit" class="btn btn-warning btn-lg btn-block">Save</button>
+          </div>
+        </div>
+        </form>
+  </div>
+  </div>
+</div>
+</div>
+</div>
+{% endblock %}

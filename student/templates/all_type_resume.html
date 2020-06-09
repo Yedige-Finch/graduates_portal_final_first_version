@@ -1,0 +1,306 @@
+{% extends 'resume_main.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block main %}
+
+{% if saved %}
+  <div class="alert alert-success" role="alert">
+    <strong>Данные</strong> сохранены успешно!
+  </div>
+
+{% endif %}
+<div class="container">
+ <div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-body">
+        {% if PhotoForm %}
+        <h2>Personal information</h2>
+        <form method="POST" action="{% url 'photo_student' %}" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="form-group row">
+            <label for="Name" class="col-sm-2 col-form-label">Name</label>
+            <div class="col-sm-10">
+              {{PhotoForm.photo}}
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-sm-12">
+              <button type="submit" class="btn btn-warning btn-lg btn-block">Save</button>
+            </div>
+          </div>
+        </form>
+        {% endif %}
+        {% if PersInforForm %}
+        <h2>Personal information</h2>
+        <form method="POST" action="{% url 'pers_inform' %}" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="form-group row">
+              <label for="Name" class="col-sm-2 col-form-label">Name</label>
+              <div class="col-sm-10">
+                {{PersInforForm.name}}
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label for="Surname" class="col-sm-2 col-form-label">Middle name</label>
+              <div class="col-sm-10">
+                {{PersInforForm.middle_name}}
+              </div>
+            </div>
+            
+            <div class="form-group row">
+              <label for="Surname" class="col-sm-2 col-form-label">Surname</label>
+              <div class="col-sm-10">
+                {{PersInforForm.surname}}
+              </div>
+            </div>
+            
+            <div class="form-group row">
+              <label for="date-input" class="col-sm-2 col-form-label">Date of Birth</label>
+              <div class="col-sm-10">
+                {{PersInforForm.birthday}}
+              </div>
+            </div>
+            
+            <div class="form-group row">
+              <label for="City" class="col-sm-2 col-form-label">City</label>
+              <div class="col-sm-10">
+                {{PersInforForm.city}}
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="date-input" class="col-sm-2 col-form-label">Gender</label>
+              <div class="col-sm-5">
+                {{PersInforForm.gender}} 
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-sm-12">
+                <button type="submit" class="btn btn-warning btn-lg btn-block">Save</button>
+              </div>
+            </div>
+        </form>
+        {% endif %}
+
+        {% if ContInforForm %}
+        <h3>Contacts</h3>
+        <form method="POST" action="{% url 'contact_information' %}" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="form-group row">
+            <label for="mail" class="col-sm-2 col-form-label">Mobile phone</label>
+            <div class="col-sm-10">
+              {{ContInforForm.mobile_phone}}
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="tel-input" class="col-sm-2 col-form-label">Home phone</label>
+            <div class="col-sm-10">
+              {{ContInforForm.home_phone}}
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="tel-input" class="col-sm-2 col-form-label">Skype</label>
+            <div class="col-sm-10">
+              {{ContInforForm.skype}}
+            </div>
+          </div>
+            <div class="form-group row">
+              <div class="col-sm-12">
+                <button type="submit" class="btn btn-warning btn-lg btn-block">Save</button>
+              </div>
+            </div>       
+        </form>
+        {% endif %}
+
+        {%if DesiredForm%}
+        <h3>Work details</h3>
+        <form method="POST" action="{% url 'desired_position' %}" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="form-group row">
+            <label for="mail" class="col-sm-2 col-form-label">Position</label>
+            <div class="col-sm-10">
+              {{DesiredForm.desired_position}}
+            </div>
+          </div>
+          
+          <div class="form-group row">
+            <label for="mail" class="col-sm-2 col-form-label">Professional area</label>
+            <div class="col-sm-10">
+              {{DesiredForm.professional_area}}
+            </div>
+          </div>
+          
+          <div class="form-group row">
+            <label for="mail" class="col-sm-2 col-form-label">Employment</label>
+            <div class="col-sm-10">
+              {{DesiredForm.employment}}
+            </div>
+          </div>
+          
+          <div class="form-group row">
+            <label for="mail" class="col-sm-2 col-form-label">Schedule</label>
+            <div class="col-sm-10">
+              {{DesiredForm.schedule}}
+            </div>
+          </div>
+            <div class="form-group row">
+              <div class="col-sm-12">
+                <button type="submit" class="btn btn-warning btn-lg btn-block">Save</button>
+              </div>
+            </div>
+        </form>
+        {% endif %}
+
+        {% if ExpForm %}
+        <h3>Experience</h3>
+        <form method="POST" action="{% url 'experience' %}" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="form-group row">
+            <label for="mail" class="col-sm-2 col-form-label">Getting started date</label>
+            <div class="col-sm-10">
+              {{ExpForm.getting_started_date}}
+            </div>
+          </div>
+          
+          <div class="form-group row">
+            <label for="mail" class="col-sm-2 col-form-label">End date</label>
+            <div class="col-sm-10">
+              {{ExpForm.end_date}}
+            </div>
+          </div>
+          
+          <div class="form-group row">
+            <label for="mail" class="col-sm-2 col-form-label">Employment</label>
+            <div class="col-sm-10">
+              {{ExpForm.organization}}
+            </div>
+          </div>
+          
+          <div class="form-group row">
+            <label for="mail" class="col-sm-2 col-form-label">Region</label>
+            <div class="col-sm-10">
+              {{ExpForm.region}}
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="mail" class="col-sm-2 col-form-label">Website</label>
+            <div class="col-sm-10">
+              {{ExpForm.website}}
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="mail" class="col-sm-2 col-form-label">Position</label>
+            <div class="col-sm-10">
+              {{ExpForm.position}}
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="mail" class="col-sm-2 col-form-label">Workplace responsibilities</label>
+            <div class="col-sm-10">
+              {{ExpForm.workplace_respon}}
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="mail" class="col-sm-2 col-form-label">Key skills</label>
+            <div class="col-sm-10">
+              {{ExpForm.key_skills}}
+            </div>
+          </div>
+            <div class="form-group row">
+              <div class="col-sm-12">
+                <button type="submit" class="btn btn-warning btn-lg btn-block">Save</button>
+              </div>
+            </div> 
+        </form>
+        {% endif %}
+
+        {% if AboutForm %}
+        <h3>About student</h3>
+        <form method="POST" action="{% url 'about_student' %}" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="form-group row">
+            <label for="mail" class="col-sm-2 col-form-label">Write about yourself</label>
+            <div class="col-sm-10">
+              {{AboutForm.about_student}}
+            </div>
+          </div>
+            <div class="form-group row">
+              <div class="col-sm-12">
+                <button type="submit" class="btn btn-warning btn-lg btn-block">Save</button>
+              </div>
+            </div> 
+        </form>
+        {% endif %}
+
+        {%if EducForm%}
+        <h3>Education</h3>
+        <form method="POST" action="{% url 'education' %}" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="form-group row">
+            <label for="Univer" class="col-sm-2 col-form-label">Faculty</label>
+            <div class="col-sm-10">
+              {{EducForm.faculty}}
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="Faculty" class="col-sm-2 col-form-label">Course</label>
+            <div class="col-sm-10">
+              {{EducForm.course}}
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="Faculty" class="col-sm-2 col-form-label">Speciality</label>
+            <div class="col-sm-10">
+              {{EducForm.specality}}
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="Speciality" class="col-sm-2 col-form-label">Graduate year</label>
+            <div class="col-sm-10">
+              {{EducForm.date_of_ending}}
+            </div>
+          </div>
+            <div class="form-group row">
+              <div class="col-sm-12">
+                <button type="submit" class="btn btn-warning btn-lg btn-block">Save</button>
+              </div>
+            </div>          
+        </form>
+        {% endif %}
+
+        {%if LangSkilForm%}
+        <h3>Language Skills</h3>
+        <form method="POST" action="{% url 'language_skills' %}" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="form-group row">
+            <label for="About" class="col-sm-2 col-form-label">Native language</label>
+            <div class="col-sm-10">
+              {{LangSkilForm.native_language}}
+            </div>
+          </div>
+           <div class="form-group row">
+            <label for="Skills" class="col-sm-2 col-form-label">Second language</label>
+            <div class="col-sm-10">
+              {{LangSkilForm.second_language}}
+            </div>
+          </div>
+
+            <hr>
+            <div class="form-group row">
+              <div class="col-sm-12">
+                <button type="submit" class="btn btn-warning btn-lg btn-block">Save</button>
+              </div>
+            </div>
+        </form>
+        {% endif %}
+
+     </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+
+

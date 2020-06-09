@@ -1,0 +1,207 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block main_menu %}
+<!-- Главное меню -->
+<nav class="navbar navbar-expand-md navbar-light bg-light sticky-top">
+  <div class="container-fluid">
+      <a href="#" class="navbar-brand"><img src="{% static 'images/logl.jpg' %}"></a>
+    <button class="navbar-toggler" type="button"
+     data-toggle="collapse" data-target="#navbarResponsive">
+     <span class="navbar-toggler-icon"></span>
+     </button>
+     <form class="form-inline mr-auto" method="get" action="{%url 'search_vacancy'%}">
+      <div class="md-form my-0">
+        <input class="form-control" type="text" placeholder="Search vacancy"  name = 'search_word' aria-label="Search">
+        <i class="fas fa-search text-black ml-3" aria-hidden="true"></i>
+      </div>
+    </form>
+     <div class="collapse navbar-collapse" id="navbarResponsive">
+
+    <ul class="navbar-nav ml-auto">
+    <li class="nav-item active"><a href="{% url 'student_home'%}" class="nav-link">Home</a></li>
+    <li class="nav-item"><a href="{% url 'get_resume_student'%}" class="nav-link">Resume</a></li>
+    <li class="nav-item dropdown">
+      <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Help<span class="caret"></span></a>
+      <ul class="dropdown-menu" role="menu">
+        <li><a href="{% url 'get_answers'%}" class="nav-link">FAQ</a></li>
+        <li><a href="{% url 'feedback'%}" class="nav-link">Feedback</a></li>
+      </ul>
+    </li>
+    <li class="nav-item dropdown">
+      <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"><span class="caret">{{user}}</span></a>
+      <ul class="dropdown-menu" role="menu">
+        <li><a href="#" class="nav-link">Settings</a></li>
+        <li><a href="{% url 'edit_student'%}" class="nav-link">Edit Profile</a></li>
+        <hr>
+        <li><a href="{% url 'logout'%}" class="nav-link">Logout</a></li>
+      </ul>
+    </li>
+  </ul>
+</div>
+</nav>
+{% endblock %}
+{% block slider %}
+{% endblock %}
+{% block main %}
+
+<br>
+<div class="row">
+  <div class="col-md-10" style="margin-left:120px;">
+    <br>
+    <div class="card">
+      <div class="row card-body">
+        <div class="col-md"">
+          <h3 class="font-italic text-center">My events</h3><hr>
+          <a href="{% url 'responses_and_invitations'%}"><h5 class="card-text">Feedbacks<span class="badge badge-secondary float-right">{%if responds%}{{responds}}{%endif%}</span></h5></a>
+          <a href="{% url 'favorite_vacancies'%}"><h5 class="card-text">Favorite vacancies<span class="badge badge-secondary float-right">{%if favorite%}{{favorite}}{%endif%}</span></h5></a>
+          <a href="{% url 'undesirable_vacancies'%}"><h5 class="card-text">Undesirable vacancies<span class="badge badge-secondary float-right">{%if undesirable%}{{undesirable}}{%endif%}</span></h5></a>
+        </div>
+        {% if articles %}
+        <span class="border-right"></span>
+        <div class="col-md-9">
+          <h3 class="font-italic text-center">Advices for resume</h3><hr>
+          <div class="row">
+            {% for advice in advices %}
+            <div class="col-md">
+              <img src="{{advice.photo.url}}" alt="Chicago" class="rounded mx-auto d-block"  width="175" height="110"><br>
+              <a href="{% url 'resume' %}"><h6 class="card-text-primary font-italic" align="center">{{advice.Advice|truncatechars:50}}</h6></a>
+            </div>
+            <span class="border-right"></span>
+            {% endfor %}
+          </div>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+<br>
+{%if recommended_vacancy%}
+<div class="container-fluid padding">
+  <div class="row alert text-center">
+    <div class="col-12">
+      <h1 class="display-4">Recommended vacancies</h1>
+      <hr>
+    </div>
+    <hr>
+  </div>
+</div>
+{% for vacancy in recommended_vacancy %}
+<div class="container">
+ <div class="row padding">
+  <div class="col-md-10">
+      <div class="card">
+        <div class="card-body">
+         <div class="vachead">
+         {% if vacancy.upd_date %}
+         <p class="vacancy-creation-time"><strong>Vacancy Edited on {{vacancy.upd_date}}</strong></p>
+         {% endif %}
+         <a href="{%url 'student_home' %}{{vacancy.vac_id}}"><h4 class="card-title">{{vacancy.vacancy_name|truncatechars:26}}</h4></a>
+         </div>
+         <div class="comphead">
+         <a href="{%url 'student_home' %}{{vacancy.company_name}}"><h4>{{vacancy.company_name}}</h4></a>
+          <h6>{{vacancy.address}}</h6>
+         <hr>
+         </div>
+         <div class="vacmain">
+         <p>{{vacancy.about|truncatechars:1200}}</p>
+         <hr>         
+       </div>
+         <div class="date">
+         <p class="vacancy-creation-time"><strong>Vacancy published {{vacancy.publication_date}}</strong></p>
+         </div>
+     </div>
+  </div>
+ </div>
+</div>
+</div>
+<br>
+{% endfor%}
+<a href="{% url 'recommendation_all' %}" class="text-center"><h5 class="card-text-center ">View all vacancies</h5></a>
+{%endif%}
+    <div class="container-fluid padding">
+      <div class="row alert text-center">
+        <div class="col-12">
+          <h1 class="display-4">Vacancies of the day</h1>
+          <hr>
+        </div>
+        <hr>
+      </div>
+    </div>
+    <!-- хз как -->
+   <div class="container">
+      <div class="row padding">
+        {%for vacancy in vacancies%}
+        <div class="col-md-4" style="padding-bottom: 35px">
+          <div class="card">
+            <div class="card-body">
+              <a href="{%url 'student_home' %}{{vacancy.vac_id}}"><h4 class="card-title">{{vacancy.vacancy_name|truncatechars:26}}</h4></a>
+              <a href="{%url 'student_home' %}{{vacancy.company_name}}" class="vac_link">{{vacancy.company_name|truncatechars:26}}</a>
+              <p class="card-text">{{vacancy.salary|truncatechars:26}}</p>  
+             <hr>  
+             <p class="card-text">{{ vacancy.about|truncatechars:150}}</p>
+              <a href="{%url 'student_home' %}{{vacancy.vac_id}}" class="btn btn-warning">Подробнее</a>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    <br>
+    <br>
+    <a href="{%url 'vacancy_of_the_day_all' %}" class="text-center"><h5 class="card-text-center ">View all vacancies</h5></a>
+    <div>
+    <div class="container-fluid">
+      <div class="row alert text-center">
+        <div class="col-12">
+          <h1 class="display-7 font-italic">Companies of the day</h1>
+          <hr>
+        </div>
+        <hr>
+      </div>
+    </div>
+    <!-- хз как -->
+
+
+    <div class="container">
+      <div class="row padding">
+        <div class="col-md">
+          <div class="card">
+            <div class="row card-body">
+              <div class="col-md">
+              {% for company in companies %}
+              <a href="{{company.company_name}}"><h4 class="card-title text-secondary">{{company.company_name}}<span class="badge badge-info float-right">{{ company.total}}</span></h4></a>
+              {% endfor %}
+              </div>
+              <span class="border-right"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <br>
+    <div class="container">
+      <div class="card">
+        <br><h3 class="font-italic text-center">Articles and News</h3><hr>
+        <div class="row card-body">
+          {% for article in articles %}
+          <div class="col-md">
+            <div class="row">
+              <div class="col-md">
+                <img src="{{article.photo.url}}" alt="Chicago" width="150" height="100">
+              </div>
+              <div class="col-md"><a href="{%url 'new' %}{{article.article_id}}"><h6 align="center" class="card-text-primary font-italic">{{article.Article|truncatechars:100}}</h6></a>
+              </div>
+            </div>
+          </div>
+          <span class="border-right"></span>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    <br>
+
+
+{% endblock %}

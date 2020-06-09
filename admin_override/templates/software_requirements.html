@@ -1,0 +1,145 @@
+{% extends 'main.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block main_menu %}
+{% if user.is_authenticated %}
+  {% if user.is_student %}
+
+<nav class="navbar navbar-expand-md navbar-light bg-light sticky-top">
+  <div class="container-fluid">
+      <a href="#" class="navbar-brand"><img src="{% static 'images/logl.jpg' %}"></a>
+    <button class="navbar-toggler" type="button"
+     data-toggle="collapse" data-target="#navbarResponsive">
+     <span class="navbar-toggler-icon"></span>
+     </button>
+     <form class="form-inline mr-auto" method="get" action="{%url 'search_vacancy'%}">
+      <div class="md-form my-0">
+        <input class="form-control" type="text" placeholder="Search vacancy"  name = 'search_word' aria-label="Search">
+        <i class="fas fa-search text-black ml-3" aria-hidden="true"></i>
+      </div>
+    </form>
+     <div class="collapse navbar-collapse" id="navbarResponsive">
+
+    <ul class="navbar-nav ml-auto">
+    <li class="nav-item"><a href="{% url 'student_home'%}" class="nav-link">Home</a></li>
+    <li class="nav-item"><a href="{% url 'get_resume_student'%}" class="nav-link">Resume</a></li>
+    <li class="nav-item dropdown">
+      <a href="#" class="nav-link dropdown-toggle active" data-toggle="dropdown">Help<span class="caret"></span></a>
+      <ul class="dropdown-menu" role="menu">
+        <li><a href="{% url 'get_answers'%}" class="nav-link">FAQ</a></li>
+        <li><a href="{% url 'feedback'%}" class="nav-link active">Feedback</a></li>
+      </ul>
+    </li>
+    <li class="nav-item dropdown">
+      <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"><span class="caret">{{user}}</span></a>
+      <ul class="dropdown-menu" role="menu">
+        <li><a href="#" class="nav-link">Settings</a></li>
+        <li><a href="{% url 'edit_student'%}" class="nav-link">Edit Profile</a></li>
+        <hr>
+        <li><a href="{% url 'logout'%}" class="nav-link">Logout</a></li>
+      </ul>
+    </li>
+     </ul>
+    </div>
+</nav>
+</nav>
+  {% else %}
+ <nav class="navbar navbar-expand-md navbar-light bg-light sticky-top">
+  <div class="container-fluid">
+    <a href="#" class="navbar-brand"><img src="{% static 'images/logl.jpg' %}"></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Vacancies<span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="{% url 'vacancy' %}" class="nav-link">Create vacancy</a></li>
+            <li><a href="{% url 'employer_home'%}" class="nav-link">My vacancies</a></li>
+          </ul>
+        </li>
+        <li class="nav-item"><a href="{% url 'candidates'%}" class="nav-link">Candidates</a></li>
+        <li class="nav-item"><a href="{% url 'company_get'%}" class="nav-link">Company</a></li>
+        <li class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle active" data-toggle="dropdown">Help<span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="{% url 'get_answers'%}" class="nav-link">FAQ</a></li>
+            <li><a href="{% url 'feedback'%}" class="nav-link active">Feedback</a></li>
+          </ul>
+        </li>
+        <li class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"><span class="caret">{{user}}</span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="#" class="nav-link">Settings</a></li>
+            <li><a href="{% url 'edit_employer'%}" class="nav-link">Edit Profile</a></li>
+            <hr>
+            <li><a href="{% url 'logout'%}" class="nav-link">Logout</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </nav>        
+  {% endif %}
+  {% else %}
+  <!-- Главное меню -->
+<nav class="navbar navbar-expand-md navbar-light bg-light sticky-top">
+  <div class="container-fluid">
+      <a href="#" class="navbar-brand"><img src="{% static 'images/logl.jpg' %}"></a>
+    <button class="navbar-toggler" type="button"
+     data-toggle="collapse" data-target="#navbarResponsive">
+     <span class="navbar-toggler-icon"></span>
+     </button>
+
+     <div class="collapse navbar-collapse" id="navbarResponsive">
+
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item active"><a href="{% url 'main'%}" class="nav-link">Home</a></li>
+    <li class="nav-item"><a href="{%url 'login' %}" class="nav-link">Login</a></li>
+    <li class="nav-item"><a href="{%url 'registration_student' %}" class="nav-link">Resume</a></li>
+     </ul>
+    </div>
+</nav>
+  {% endif %}
+{% endblock %}
+{% block main %}
+
+<div class="container">
+	<div class="soft">
+	<h3>Software requirements<h3><hr>
+	<h4>For full and correct work with the site, the following technical requirements must be observed:</h4>
+	<p style="margin:0;">
+	- using one of the latest browsers listed: Microsoft Edge, Microsoft Internet Explorer, Mozilla Firefox, Google Chrome, Safari, Yandex.Browser, Opera;
+	</p>
+	<p style="margin:0;">
+	- permission to use cookies;
+    </p>
+	<p style="margin:0;">
+	- JavaScript performance.
+	</p>
+	<hr>
+	<h4>To enable cookie:</h4>
+	<h5>When using Microsoft Internet Explorer:</h5>
+	<p>
+	- you need to open the item "Internet Options", menu "Tools" of the browser. Go to the "Privacy" tab, click the "Advanced" button. Check the presence of marks on the “Accept” points in the main and third-party cookies and the absence of a mark on the paragraph “Override automatic processing of cookies”
+	</p>
+	<h5>When using Mozilla Firefox</h5>
+	<p>
+	- in the top menu, select "Tools", in it - "Settings". In the "Privacy" section that opens, check the "Accept cookies from sites" option.
+	</p>
+	<h5>When using Opera Browser:</h5>
+	<p>
+	- you need to select the item "Quick Settings" in the menu item "Tools", activate the option "Enable cookies"
+	</p>
+	<h5>When using Google Chrome:</h5>
+	<p>
+	- click on the “Configure and manage Google Chrome” icon, click on the “Options” item, in the window that opens, go to the “Advanced” tab, in the “Personal data”, “Content settings” section, set the value “Allow saving local data (recommended)”.
+	</p>
+	
+	</div>
+</div>
+<br>
+{% endblock %}
+
+{% block slider %}
+{% endblock %}

@@ -1,0 +1,206 @@
+{% extends 'student_home.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block slider %}
+{% endblock %}
+{% block main%}
+<div class="container">
+  <div class="row padding">
+    <div class="col-md-10">
+      <div class="card">
+        <div class="card-body">
+          <div class="vachead">
+            {% if vacancies.upd_date %}
+            <p class="vacancy-creation-time"><strong>Vacancy Edited on {{vacancies.upd_date}}</strong></p>
+            {% endif %}
+            <h3>{{vacancies.vacancy_name}}</h3>
+            <h4>{{vacancies.salary}}</h4>
+            <hr>
+          </div>
+          
+          <div class="comphead">
+            <a href="{%url 'student_home' %}{{vacancies.company_name}}"><h4>{{vacancies.company_name}}</h4></a>
+            <h6>{{vacancies.address}}</h6>
+            <hr>
+          </div>
+          
+          <div class="vacbutton">
+            {% if respond %}
+            <a href="" class="btn btn-secondary" data-toggle="modal" data-target="#">Responded</a>
+            {% else %}
+            <a href="#exampleModalCenter" class="btn btn-warning" data-toggle="modal" data-target="#">Response</a>
+            {% endif%}
+            {% if favorite %}
+            <a href="" class="btn btn-secondary" data-toggle="modal" data-target="#">Added to favorite</a>
+            {% elif undesirable  %}
+            <a href="" class="btn btn-secondary" data-toggle="modal" data-target="#">Ignored</a>
+            {% else %}
+            <a href="#favorite" data-toggle="modal" class="btn btn-success" >Favorite</a>
+            <a href="#undesirable" data-toggle="modal" class="btn btn-success">Ignore</a>
+            {% endif%}
+          </div>
+          <hr>
+          <div class="vacmain">
+            <p>Experience: <span>{{vacancies.experience}}</span></p>
+            <p>Schedule: <span>weekdays</span></p>
+            <hr>
+            <p>{{vacancies.about}}</p>
+            <hr>
+            <p><strong>Requirements to job</strong></p>
+            {{vacancies.Requirements|linebreaks}}
+            <hr>
+            <p><strong>Duties</strong></p>
+            {{vacancies.duties|linebreaks}}
+            <hr>
+            <p><strong>Conditions</strong></p>
+            {{vacancies.work_condition}}
+            <hr>
+            <p><strong>Skills</strong></p>
+            {{vacancies.skills}}
+            <hr>
+            <p><strong>Contact details</strong></p>
+            <p>Phone: <span>{{vacancies.contacts_phone}}</span></p>
+            <p>Mail: <span>{{vacancies.contact_mail}}</span></p>
+          </div>
+          <hr>
+          <div class="date">
+            <p class="vacancy-creation-time"><strong>Vacancy published {{vacancies.publication_date}}</strong></p>  
+          </div>
+
+
+
+          <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLongTitle">Respond to Vacancy</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <h5>Vacancy:</h5>
+                  <p>{{vacancies.vacancy_name}}</p>
+                  <hr>
+                  <h5>Resume for the response</h5>
+                  <p>{{DesrdPos.desired_position}}: <a href="{% url 'get_resume_student'%}" class="tooltip-test" title="Tooltip">Click to View CV</a> </p>
+                  <form  method="POST" action = "{% url 'student_respond' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="vac_id" value="{{vacancies.vac_id}}">
+                    <input type="hidden" name="student" id="respond_vacancy" value="{{request.user.student.user}}">
+                    <input type="hidden" name="student" value="">
+                    <div class="form-group">
+                      <label for="message-text" class="col-form-label"  required>Covering letter</label>
+                      <textarea class="form-control" name="message" required></textarea>
+                    </div>
+                    <button  class="btn btn-primary">Respond</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal fade" id="favorite" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLongTitle">Add to favorite</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <h5>Vacancy:</h5>
+                  <p>{{vacancies.vacancy_name}}</p>
+                  <hr>
+                  <h5>Are you sure ? </h5>
+                  <br>
+                  <form  method="POST" action = "{% url 'add_to_favorite_vacancy' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="vac_id" value="{{vacancies.vac_id}}">
+                    <input type="hidden" name="student" id="respond_vacancy" value="{{request.user.student.user}}">
+                    <button  class="btn btn-primary">Save as favorite</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal fade" id="undesirable" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLongTitle">Add to undesirable</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <h5>Vacancy:</h5>
+                  <p>{{vacancies.vacancy_name}}</p>
+                  <hr>
+                  <h5>Are you sure ? </h5>
+                  <br>
+                  <form  method="POST" action = "{% url 'add_to_undesirable_vacancy' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="vac_id" value="{{vacancies.vac_id}}">
+                    <input type="hidden" name="student" id="respond_vacancy" value="{{request.user.student.user}}">
+                    <button  class="btn btn-primary">Save as undesirable</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br>
+      
+      {% if respond%}
+      {% for resp in respond%}
+      <div class="card text-white bg-warning mb-3">
+        <div class="card-header">Covering letter</div>
+        <div class="card-body">
+          <h5 class="card-title">{{resp.message}} </h5>
+          <p class="card-text"><strong>Letter written {{resp.respond_send_date}}</strong></p>
+        </div>
+      </div>
+      {% endfor %}
+      {% endif %}
+      
+      {% for resp in respond%}
+      {% if resp.respond_status_student == 'Invititation'%}
+      <div class="card text-white bg-success mb-3">
+        <div class="card-header">Employer answer</div>
+        <div class="card-body">
+          <h5 class="card-title">>{{resp.employer_message}}</h5>
+          <p class="card-text"><strong>Letter written {{resp.respond_send_date}}</strong></p>
+        </div>
+      </div>
+      {% endif %}
+      {% endfor %}
+
+      {% for resp in respond%}
+      {% if resp.respond_status_student == 'Renouncement'%}
+      <div class="card text-white bg-danger mb-3">
+        <div class="card-header">Your answer</div>
+        <div class="card-body">
+          <h5 class="card-title">>{{resp.employer_message}}</h5>
+          <p class="card-text"><strong>Letter written {{resp.respond_send_date}}</strong></p>
+        </div>
+      </div>
+      {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</div>
+<br>
+<br>
+<br><br>
+
+{% endblock %}
+{% block javascript %}
+<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+{% endblock %}

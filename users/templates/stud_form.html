@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+{% load crispy_forms_tags %}
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css">
+<style type="text/css">
+li{
+  color: red;
+}
+</style>
+</head>
+<body>
+  <div class="container">
+    <br>  <p class="text-center">SAK(developer lastname abbreviation) developers group.</p>
+    <hr>
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="card">
+          <header class="card-header">
+            <a href="{% url 'registration_employer' %}" class="float-right btn btn-outline-primary mt-1">Registration Employer</a>
+            <h4 class="card-title mt-2">Sign up</h4>
+          </header>
+          <article class="card-body">
+            <form  action="{% url 'registration_student' %}" method="post">
+              {% csrf_token %}
+              <div class="form-group">
+                {{form.non_field_errors}}
+                {{form.password2.errors}}
+                {{form.email.errors}}                
+              </div>
+              {% for item in form %}
+              <div class="form-group">
+                {{item|as_crispy_field}}
+              </div> 
+              {% endfor %}
+              {% for item in profile %}
+              <div class="form-group">
+                {{item|as_crispy_field}}
+              </div> 
+              {% endfor %}
+              <div class="form-group">
+                <button type="submit" class="btn btn-primary btn-block"> Register  </button>
+              </div>
+              <small class="text-muted">By clicking the 'Sign Up' button, you confirm that you accept our <br> Terms of use and Privacy Policy.</small>
+            </form>
+            <div class="form-group">
+              <button type="submit" class="btn btn-info btn-block"><a type="submit" style='color: white' class="select_button" href="{% url 'main' %}">Home</a></button>
+            </div>
+          </article> 
+          <div class="border-top card-body text-center">Have an account? <a href="{% url 'login' %}">Log In</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
+
+
+
+

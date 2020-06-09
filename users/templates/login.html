@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+{% load static %}
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+</head>
+<body>
+  <div class="container">
+  <br>  <p class="text-center">SAK(developer lastname abbreviation) developers group. </p>
+  <hr>
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card">
+        <header class="card-header">
+          <a href="{% url 'main' %}" class="float-right btn btn-outline-link mt-1">Home</a>
+          <h4 class="card-title mt-2">Log In</h4>
+        </header>
+        <article class="card-body">
+          <form action="{% url 'login' %}" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+              <label>Username</label>
+              <input type="email" class="form-control" placeholder="Enter Username(email)" name="username" required>
+              <small class="form-text text-muted">We'll never share your email with anyone else.</small>
+            </div> 
+            <div class="form-group">
+              <label>Password</label>
+              <input type="password" class="form-control" placeholder="Enter Password" name="password" required>
+              <small class="form-text text-muted">We'll never share your password with anyone else.</small>
+            </div> 
+            <div class="form-group">
+              <label style="color: red">{{ text }}</label>
+            </div> 
+            <div class="form-group">
+              <button type="submit" class="btn btn-warning btn-block"> Log In  </button>
+            </div>      
+        </form>
+        <h4 class="card-title mt-2">Register</h4>
+        <div class="form-group">
+          <button type="submit" class="btn btn-info btn-block"><a type="submit" style='color: white' href="{% url 'registration_student' %}"> Register Student</a> </button>
+        </div>
+        <div class="form-group">
+          <button type="submit" class="btn btn-info btn-block"><a type="submit" style='color: white' class="select_button" href="{% url 'registration_employer' %}">Register Employer</a></button>
+        </div>
+      </article>
+    </div>
+      <div class="border-top card-body text-center">Have an account? <a href="">Log In</a></div>
+    </div>
+  </div>
+</body>
+</html>
+
+
+
+
+

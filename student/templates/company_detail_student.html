@@ -1,0 +1,64 @@
+{% extends 'student_home.html' %}
+{% load static %}
+{% block main%}
+<div class="container">
+ <div class="row padding">
+  <div class="col-md-10">
+      <div class="card">
+        <div class="card-body">
+         <div class="res_head">
+<!--          <div class="photo" style="position:left;">
+         <p>Company div</p>
+         </div> -->
+         <h3 style="color:grey;">{{companies.company_name}}</h3>
+         <p>{{companies.about_company}}</p>
+         <hr>
+         </div>
+         <div class="contacts">
+         <h4 style="color:grey;">Contacts and address</h4>
+         <p>Phone: <span>{{companies.contacts_phone}}</span></p>
+         <p>Mail: <span>{{companies.company_mail}}</span></p>
+         <p class="tel">Site: <span>{{companies.contacts_site}}</span></p>
+         <p>Adress: <span>{{companies.address}}</span></p>
+         <hr>
+         <h4 style="color:grey;">Industry</h4>
+         <p>{{companies.industry}}</p>
+         </div>     
+         <hr>
+     </div>
+  </div>
+ </div>
+ </div>
+ </div>
+ {%if vacancies%}
+ <div class="container-fluid padding">
+  <div class="row alert text-center">
+    <div class="col-12">
+      <h1 class="display-7">Company vacancies</h1>
+      <hr>
+    </div>
+    <hr>
+  </div>
+</div>
+<div class="container">
+  <div class="row padding">
+    {%for vacancy in vacancies%}
+    <div class="col-md-4" style="padding-bottom: 35px">
+      <div class="card">
+        <div class="card-body">
+          <a href="{%url 'student_home' %}{{vacancy.vac_id}}"><h4 class="card-title">{{vacancy.vacancy_name|truncatechars:26}}</h4></a>
+          <a href="#" class="vac_link">{{vacancy.company_name}}</a>
+          <p class="card-text">{{vacancy.salary}}</p>  
+         <hr>
+         <p >{{vacancy.about|truncatechars:200}}</p>
+         <a href="{%url 'student_home' %}{{vacancy.vac_id}}" class="btn btn-warning">Details</a>
+       </div>
+     </div>
+   </div>
+   {%endfor%}
+ </div>
+</div>
+ {% endif %}
+{% endblock %}
+{% block slider %}
+{% endblock %}

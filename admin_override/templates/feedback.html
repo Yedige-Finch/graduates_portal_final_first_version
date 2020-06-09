@@ -1,0 +1,168 @@
+{% extends 'main.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block main_menu %}
+{% if user.is_authenticated %}
+  {% if user.is_student %}
+
+<nav class="navbar navbar-expand-md navbar-light bg-light sticky-top">
+  <div class="container-fluid">
+      <a href="#" class="navbar-brand"><img src="{% static 'images/logl.jpg' %}"></a>
+    <button class="navbar-toggler" type="button"
+     data-toggle="collapse" data-target="#navbarResponsive">
+     <span class="navbar-toggler-icon"></span>
+     </button>
+     <form class="form-inline mr-auto" method="get" action="{%url 'search_vacancy'%}">
+      <div class="md-form my-0">
+        <input class="form-control" type="text" placeholder="Search vacancy"  name = 'search_word' aria-label="Search">
+        <i class="fas fa-search text-black ml-3" aria-hidden="true"></i>
+      </div>
+    </form>
+     <div class="collapse navbar-collapse" id="navbarResponsive">
+
+    <ul class="navbar-nav ml-auto">
+    <li class="nav-item"><a href="{% url 'student_home'%}" class="nav-link">Home</a></li>
+    <li class="nav-item"><a href="{% url 'get_resume_student'%}" class="nav-link">Resume</a></li>
+    <li class="nav-item dropdown">
+      <a href="#" class="nav-link dropdown-toggle active" data-toggle="dropdown">Help<span class="caret"></span></a>
+      <ul class="dropdown-menu" role="menu">
+        <li><a href="{% url 'get_answers'%}" class="nav-link">FAQ</a></li>
+        <li><a href="{% url 'feedback'%}" class="nav-link active">Feedback</a></li>
+      </ul>
+    </li>
+    <li class="nav-item dropdown">
+      <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"><span class="caret">{{user}}</span></a>
+      <ul class="dropdown-menu" role="menu">
+        <li><a href="#" class="nav-link">Settings</a></li>
+        <li><a href="{% url 'edit_student'%}" class="nav-link">Edit Profile</a></li>
+        <hr>
+        <li><a href="{% url 'logout'%}" class="nav-link">Logout</a></li>
+      </ul>
+    </li>
+     </ul>
+    </div>
+</nav>
+</nav>
+  {% else %}
+ <nav class="navbar navbar-expand-md navbar-light bg-light sticky-top">
+  <div class="container-fluid">
+    <a href="#" class="navbar-brand"><img src="{% static 'images/logl.jpg' %}"></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Vacancies<span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="{% url 'vacancy' %}" class="nav-link">Create vacancy</a></li>
+            <li><a href="{% url 'employer_home'%}" class="nav-link">My vacancies</a></li>
+          </ul>
+        </li>
+        <li class="nav-item"><a href="{% url 'candidates'%}" class="nav-link">Candidates</a></li>
+        <li class="nav-item"><a href="{% url 'company_get'%}" class="nav-link">Company</a></li>
+        <li class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle active" data-toggle="dropdown">Help<span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="{% url 'get_answers'%}" class="nav-link">FAQ</a></li>
+            <li><a href="{% url 'feedback'%}" class="nav-link active">Feedback</a></li>
+          </ul>
+        </li>
+        <li class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"><span class="caret">{{user}}</span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="#" class="nav-link">Settings</a></li>
+            <li><a href="{% url 'edit_employer'%}" class="nav-link">Edit Profile</a></li>
+            <hr>
+            <li><a href="{% url 'logout'%}" class="nav-link">Logout</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </nav>        
+  {% endif %}
+  {% else %}
+  <!-- Главное меню -->
+<nav class="navbar navbar-expand-md navbar-light bg-light sticky-top">
+	<div class="container-fluid">
+	    <a href="#" class="navbar-brand"><img src="{% static 'images/logl.jpg' %}"></a>
+		<button class="navbar-toggler" type="button"
+		 data-toggle="collapse" data-target="#navbarResponsive">
+		 <span class="navbar-toggler-icon"></span>
+		 </button>
+
+		 <div class="collapse navbar-collapse" id="navbarResponsive">
+
+	  <ul class="navbar-nav ml-auto">
+	    <li class="nav-item active"><a href="{% url 'main'%}" class="nav-link">Home</a></li>
+		<li class="nav-item"><a href="{%url 'login' %}" class="nav-link">Login</a></li>
+		<li class="nav-item"><a href="{%url 'registration_student' %}" class="nav-link">Resume</a></li>
+     </ul>
+    </div>
+</nav>
+  {% endif %}
+{% endblock %}
+{% block main %}
+
+
+{% if saved %}
+  <div class="alert alert-success" role="alert">
+    Your<strong> feedback </strong> sent!
+  </div>
+
+{% endif %}
+
+	{% if form %}
+<div class="container">
+ <div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-body">
+        <h2>Feedback</h2>
+    	<form method="POST" action="{% url 'feedback' %}" enctype="multipart/form-data">
+    	  {% csrf_token %}
+        <div class="form-group row">
+          <label for="Name" class="col-sm-2 col-form-label">Topic</label>
+          <div class="col-sm-10">
+            {{form.topic}}
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label for="Surname" class="col-sm-2 col-form-label">Content</label>
+          <div class="col-sm-10">
+            {{form.content}}
+          </div>
+        </div>
+        
+        <div class="form-group row">
+          <label for="Surname" class="col-sm-2 col-form-label">Name</label>
+          <div class="col-sm-10">
+            {{form.sent_name}}
+          </div>
+        </div>
+        
+        <div class="form-group row">
+          <label for="date-input" class="col-sm-2 col-form-label">Email</label>
+          <div class="col-sm-10">
+            {{form.e_mail}}
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-sm-12">
+            <button type="submit" class="btn btn-success btn-lg btn-block">Send</button>
+          </div>
+        </div>
+    	</form>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+	{% endif %}
+
+{% endblock %}
+
+{% block slider %}
+{% endblock %}
+

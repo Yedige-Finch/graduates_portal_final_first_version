@@ -1,0 +1,107 @@
+{% extends 'student_home.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block main %}
+
+<div class="container">
+  <div class="card">
+    <div class="row card-body">
+      <div class="col-md-12">
+        <h3 class="font-italic text-center">My events</h3><hr>
+        <div class="row">
+        <div class="col-md">
+          <a href="{% url 'responses_and_invitations'%}"><h5 class="card-text">Feedbacks<h5></a>
+        </div>
+        <span class="border-right"></span>
+        <div class="col-md">
+          <a href="{% url 'favorite_vacancies'%}"><h5 class="card-text">Favorite vacancies</h5></a>
+        </div>
+        <span class="border-right"></span>
+        <div class="col-md">
+        <a href="{% url 'undesirable_vacancies'%}"><h5 class="card-text">Undesirable vacancies</h5></a>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<br>
+
+<div class="container">
+  {% if favorite %}
+  <h2>Favorite vacancies</h2>
+  {% for fvrt in favorite%}
+  <div class="card">
+    <div class="card-body">
+      <h4 class="card-title"><a href="{%url 'student_home' %}{{fvrt.vac_id.vac_id}}" class="card-title">{{fvrt.vac_id.vacancy_name}}<span style="float:right;">{{fvrt.vac_id.salary}}<span></a></h4><hr>
+      <a href="{%url 'student_home' %}{{fvrt.vac_id.company_name}}" class="card-text"><p>{{fvrt.vac_id.company_name}}</p></a>
+      <form method="POST" action="{%url 'remove_from_favorite_vacancy'%}">
+        {% csrf_token %}
+        <input type="hidden" name="fav_id" value="{{fvrt.fav_id}}">
+        <input type="hidden" name="vac_id" value="{{fvrt.vac_id.vac_id}}">
+        <input type="hidden" name="student" id="respond_vacancy" value="{{request.user.student.user}}">
+        <button  class="card-link btn btn-danger">Remove from favorite</button>
+      </form>
+    </div>
+  </div><br>
+  {% endfor %}
+  <!-- хз как -->
+  <h2>Recommend vacancies</h2><hr>
+  <div class="container">
+    <div class="row padding">
+      {% for vacancy in recommended_vacancy%}
+        <div class="col-md-4" style="padding-bottom: 35px">
+          <div class="card">
+            <div class="card-body">
+              <a href="{%url 'student_home' %}{{vacancy.vac_id}}"><h4 class="card-title">{{vacancy.vacancy_name|truncatechars:26}}</h4></a>
+              <a href="{%url 'student_home' %}{{vacancy.company_name}}" class="vac_link">{{vacancy.company_name|truncatechars:26}}</a>
+              <p class="card-text">{{vacancy.salary|truncatechars:26}}</p>  
+             <hr>  
+             <p class="card-text">{{vacancy.about|truncatechars:150}}</p>
+              <a href="{%url 'student_home' %}{{vacancy.vac_id}}" class="btn btn-warning">Details</a>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+{% else %}
+<h2>You don't have favorite vacancies. Other vacancies:</h2><hr>
+{% for vacancy in vacancies %}
+<div class="container">
+ <div class="row padding">
+  <div class="col-md-10">
+      <div class="card">
+        <div class="card-body">
+         <div class="vachead">
+         {% if vacancy.upd_date %}
+         <p class="vacancy-creation-time"><strong>Vacancy Edited on {{vacancy.upd_date}}</strong></p>
+         {% endif %}
+         <a href="{%url 'student_home' %}{{vacancy.vac_id}}"><h4 class="card-title">{{vacancy.vacancy_name|truncatechars:26}}</h4></a>
+         </div>
+         <div class="comphead">
+         <a href="{%url 'student_home' %}{{vacancy.company_name}}"><h4>{{vacancy.company_name}}</h4></a>
+          <h6>{{vacancy.address}}</h6>
+         <hr>
+         </div>
+         <div class="vacmain">
+         <p>{{vacancy.about}}</p>
+         <hr>         
+       </div>
+         <div class="date">
+         <p class="vacancy-creation-time"><strong>Vacancy published {{vacancy.publication_date}}</strong></p>
+         </div>
+     </div>
+  </div>
+ </div>
+</div>
+</div>
+<br><br>
+{% endfor%}
+{%endif%}
+</div>
+{% endblock %}
+
+
+
